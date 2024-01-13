@@ -1,0 +1,15 @@
+# .gitignore
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.vscode/
+*.pyc
+*.pyo
+*.pyd
+.idea/
+*.iml
+venv/
+*.pyc
+*.pyo
+*.pyd
