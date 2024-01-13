@@ -25,6 +25,7 @@ pip install -r requirements.txt
 ### 4. How to run
 
 ```bash
+cd src/
 python main.py
 ```
 
