@@ -7,9 +7,9 @@ if __name__ == "__main__":
     try:
         webpage = fetch_html(tab_url)
 
-        pre_text, tabs_text, post_text = extract_tabs(webpage)
+        text = extract_tabs(webpage)
 
-        convert_to_pdf(pre_text, tabs_text, post_text)
+        convert_to_pdf(text)
 
         print("Tab successfully downloaded and converted to PDF.")
     except Exception as e:

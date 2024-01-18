@@ -41,26 +41,15 @@ def get_meta_post(all_spans):
     for meta_info in all_spans[last_tab_index + 1 + redundant_tabs:]:
         text += meta_info.text
     return text
-def extract_tabs(raw_html):
-    tabs_text = []
 
+def extract_tabs(raw_html):
     soup = BeautifulSoup(raw_html, 'html.parser')
 
     pre = soup.find('pre')
 
-    all_spans = pre.findAll('span')
-    tabs = pre.findAll(class_='fsG7q')
+    return pre.text
 
-    pre_text = get_meta_pre(all_spans)
-
-    for tab in tabs:
-        tabs_text.append(tab.text)
-
-    post_text = get_meta_post(all_spans)
-
-    return pre_text, tabs_text, post_text
-
-def convert_to_pdf(pre_text, tabs_text, post_text):
+def convert_to_pdf(text):
     font = "Courier"
     fontSize = 10
 
@@ -71,26 +60,13 @@ def convert_to_pdf(pre_text, tabs_text, post_text):
 
     x, y = 50, pdf_height - 20
 
-    for row in pre_text.split('\n'):
-        pdf_canvas.drawString(x, y, row.strip())
-        y -= 12
-
-    for tab in tabs_text:
-        if y < 72:
+    for tab in text.split('\n'):
+        if y < 200 and tab == f'{chr(32)}{chr(13)}':
             pdf_canvas.showPage()
             pdf_canvas.setFont(font, fontSize)
             y = pdf_height - 20
 
-        lines = tab.split('\n')
-
-        for line in lines:
-            pdf_canvas.drawString(x, y, line.strip())
-            y -= 12
-        pdf_canvas.drawString(x, y, '')
-        y -= 12
-
-    for row in post_text.split('\n'):
-        pdf_canvas.drawString(x, y, row.strip())
+        pdf_canvas.drawString(x, y, tab.strip())
         y -= 12
 
     pdf_canvas.save()
