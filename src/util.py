@@ -1,17 +1,39 @@
+import os.path
+
 from bs4 import BeautifulSoup
-from selenium import webdriver
+from selenium.webdriver import Chrome, Edge, Firefox, ChromeOptions, EdgeOptions, FirefoxOptions
+from selenium.common.exceptions import WebDriverException
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from urllib.parse import urlparse, urljoin
 
 
 def init_selenium():
-    options = webdriver.ChromeOptions()
-    options.add_argument('--headless')
-    options.add_argument('--disable-gpu')
+    webdriver = None
 
-    return webdriver.Chrome(options=options)
+    driver_options = {
+        Chrome: ChromeOptions,
+        Firefox: FirefoxOptions,
+        Edge: EdgeOptions,
+    }
 
+    for driver_class, options_class in driver_options.items():
+        try:
+            options = options_class()
+            options.add_argument('--headless')
+            options.add_argument('--disable-gpu')
+            webdriver = driver_class(options=options)
+            break
+        except WebDriverException as e:
+            print(f'Error initializing {webdriver.name}: {e}')
+            continue
+
+    if webdriver:
+        print(f'Successfully initialized {webdriver.name}')
+    else:
+        Exception('Could not find any valid webdriver')
+
+    return webdriver
 def fetch_html(url):
     driver = init_selenium()
     driver.get(url)
@@ -19,6 +41,7 @@ def fetch_html(url):
     webpage = driver.page_source
     driver.quit()
     return webpage
+
 def get_meta_pre(all_spans):
     text = ''
     for span in all_spans:
@@ -49,11 +72,11 @@ def extract_tabs(raw_html):
 
     return pre.text
 
-def convert_to_pdf(text):
+def convert_to_pdf(filename, text):
     font = "Courier"
     fontSize = 10
 
-    pdf_canvas = canvas.Canvas('tabs.pdf', pagesize=letter)
+    pdf_canvas = canvas.Canvas(os.path.join('output', filename + '.pdf'), pagesize=letter)
     pdf_width, pdf_height = letter
 
     pdf_canvas.setFont(font, fontSize)

@@ -7,7 +7,7 @@ This script allows you to download and convert Ultimate Guitar tabs to PDF forma
 ### 1. Prerequisites
 
 - Python 3.x
-- Chrome WebDriver
+- One of the following Web drivers: Chrome / Firefox (geckodriver) / Edge
 
 ### 2. Clone the repository
 
@@ -25,7 +25,6 @@ pip install -r requirements.txt
 ### 4. How to run
 
 ```bash
-cd src/
 python main.py
 ```
 
