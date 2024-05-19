@@ -12,8 +12,8 @@ This script allows you to download and convert Ultimate Guitar tabs to PDF forma
 ### 2. Clone the repository
 
 ```bash
-git clone https://github.com/hubanton/ultimate-guitar-tab-downloader.git
-cd ultimate-guitar-tab-downloader
+git clone https://github.com/hubanton/Ultimate-Guitar-to-PDF.git
+cd Ultimate-Guitar-to-PDF
 ```
 
 ### 3. Install dependencies
